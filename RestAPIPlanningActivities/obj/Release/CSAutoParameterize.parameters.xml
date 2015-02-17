@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="MyDbContext-Web.config Connection String" description="MyDbContext Cadena de conexión que usa la aplicación en web.config para obtener acceso a la base de datos." defaultValue="server=localhost;Port=3306 ;Uid=root;password=n98smxzt;database=planningactivities; CharSet=utf8;Persist Security Info = true" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="G:\\Desarrollo\ aplicaciones\ asp\.net\ MVC\\RestAPIPlanningActivities\\RestAPIPlanningActivities\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='MyDbContext']/@connectionString" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Cadena de conexión que usa la aplicación en web.config para obtener acceso a la base de datos." defaultValue="DefaultConnection_ConnectionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="G:\\Desarrollo\ aplicaciones\ asp\.net\ MVC\\RestAPIPlanningActivities\\RestAPIPlanningActivities\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>

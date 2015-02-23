@@ -15,7 +15,7 @@ namespace RestAPIPlanningActivities.Models
         {
             //inicializar la base de datos 
             //base.Configuration.ProxyCreationEnabled = false;
-            Database.SetInitializer<MyDbContext>(new MyDbInitializer());
+            //Database.SetInitializer<MyDbContext>(new MyDbInitializer());
 
             
         }

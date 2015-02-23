@@ -13,27 +13,29 @@ namespace RestAPIPlanningActivities.Models
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public Int64 id { get; set; }
-        [MaxLength(100)] 
-        public string nombre { get; set; }
-        [Column("informacion", TypeName="ntext")]  
-        public string informacion { get; set; }
-        [MaxLength(250)] 
-        public string direccion { get; set; }
-        public DateTime horarioinicial { get; set; }
-        public DateTime horariofinal { get; set; }
-        [MaxLength(250)] 
-        public string latitud { get; set; }
+        public Int64 Id { get; set; }
+        [MaxLength(100)]
+        public string Nombre { get; set; }
+        //ntext para SQL Server y text para MySQL
+        //[Column("informacion", TypeName = "ntext")]
+        [Column("informacion", TypeName = "text")]
+        public string Informacion { get; set; }
         [MaxLength(250)]
-        public string longitud { get; set; }
+        public string Direccion { get; set; }
+        public DateTime Horarioinicial { get; set; }
+        public DateTime Horariofinal { get; set; }
         [MaxLength(250)]
-        public string altitud { get; set; }
-        //precision = accuracy
+        public string Latitud { get; set; }
         [MaxLength(250)]
-        public string accuracy { get; set; }
-
-        public Int64 idusuario { get; set; }
-        public virtual Usuarios Usuarios { get; set; }
+        public string Longitud { get; set; }
+        [MaxLength(250)]
+        public string Altitud { get; set; }
+        //precision = accurac
+        [MaxLength(250)]
+        public string Accuracy { get; set; }
+        //[ForeignKey("UsuarioID")]
+        public Int64 UsuarioID { get; set; }
+        public virtual Usuarios Usuario { get; set; }
         
         
         

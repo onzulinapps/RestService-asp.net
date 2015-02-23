@@ -94,6 +94,7 @@ namespace RestAPIPlanningActivities.Controllers
             //intentare poner la fecha de ese momento siempre que añada un usuario 
             usuarios.created_at = DateTime.Now;
             usuarios.updated_at = DateTime.Now;
+            //aqui es donde debo cifrar la contraseña para que no se vea
             db.Usuarios.Add(usuarios);
             await db.SaveChangesAsync();
 

@@ -15,6 +15,9 @@ namespace RestAPIPlanningActivities.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        //ApplicationDbContext applicationDbContext = new ApplicationDbContext();
+        
+        
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -55,8 +58,7 @@ namespace RestAPIPlanningActivities.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
-        {
+        public ActionResult Login(string returnUrl)        {
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -72,6 +74,21 @@ namespace RestAPIPlanningActivities.Controllers
             {
                 return View(model);
             }
+
+            // Require the user to have a confirmed email before they can log on.
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user != null)
+            {
+                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                {
+                    //string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account-Resend");
+                    string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirma su cuenta reenviandola");
+                    ViewBag.errorMessage = "You must have a confirmed email to log on.";
+                    //ViewBag.errorMessage = "Debes tener un email confirmado para loguearte.";
+                    return View("Error");
+                }
+            }
+
 
             // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
             // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
@@ -142,6 +159,21 @@ namespace RestAPIPlanningActivities.Controllers
             return View();
         }
 
+        //metodo para el envio del token de confirmacion 
+        public async Task<string> SendEmailConfirmationTokenAsync(string userID, string subject)
+        {
+            
+            
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(userID);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account",
+               new { userId = userID, code = code }, protocol: Request.Url.Scheme);
+            await UserManager.SendEmailAsync(userID, subject,
+               "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+            return callbackUrl;
+            
+        }
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -152,18 +184,36 @@ namespace RestAPIPlanningActivities.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                
                 var result = await UserManager.CreateAsync(user, model.Password);
+                
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    //string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
+                    string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirma tu cuenta");
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    //hacer la confirmacion del mail 
+                    //ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
+                    //     + "before you can log in.";
+                    ViewBag.Message = "Chequea tu email y confirma la cuenta, debes confirmarla "
+                         + "antes de loguearte.";
+                    return View("Info");
+                    /* codigo anterior 
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account",
+                       new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id,
+                       "Confirme su cuenta", "Por favor confirme su cuenta haciendo click en el enlace <a href=\"" 
+                       // "Confirm your account", "Please confirm your account by clicking <a href=\""
+                       + callbackUrl + "\">here</a>");
+                    */
                     // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
                     // Enviar correo electrónico con este vínculo
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", "Para confirmar la cuenta, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
@@ -208,7 +258,10 @@ namespace RestAPIPlanningActivities.Controllers
                     // No revelar que el usuario no existe o que no está confirmado
                     return View("ForgotPasswordConfirmation");
                 }
-
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
                 // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
                 // Enviar correo electrónico con este vínculo
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);

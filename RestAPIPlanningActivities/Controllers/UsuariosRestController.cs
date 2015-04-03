@@ -7,57 +7,113 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin;
+using Microsoft.Owin.Security;
 using System.Web.Http;
+using System.Web;
+using System.Web.Http.Routing;
 using System.Web.Http.Description;
 using RestAPIPlanningActivities.Models;
 
+
 namespace RestAPIPlanningActivities.Controllers
 {
-    public class UsuariosRestController : ApiController
+    public class UsuariosRestController : ApiController 
     {
+        #region atributos
         private MyDbContext db = new MyDbContext();
-
        
-        
+        //private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+        #endregion
+        #region constructores
+        public UsuariosRestController() 
+        {
+        }
+
+        public UsuariosRestController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                //aqui en GetUserManager 
+                return _userManager ?? HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+        #endregion
+       
+         
         public IQueryable<UsuariosDTO> Get()
         {
+            //db.Database.Connection.Open();
             //return db.Usuarios;
-            var usuarios = from u in db.Usuarios
-                        select new UsuariosDTO()
-                        {
-                            id = u.id,
-                            email = u.email,
-                            nombre = u.nombre,
-                            apellidos = u.apellidos
-                        };
-            
+            db.Database.Connection.Open();
+
+            var usuarios = from u in db.AspNetUsers
+                           select new UsuariosDTO()
+                           {
+
+                               email = u.Email,
+                               emailConfirmed = u.EmailConfirmed,
+                               nombre = u.Nombre,
+                               apellidos = u.Apellidos,
+                           };
+
             return usuarios;
+            
         }
 
         
         // GET: api/UsuariosRest/5
-        [ResponseType(typeof(Usuarios))]
+        [ResponseType(typeof(AspNetUsers))]
         public async Task<IHttpActionResult> GetUsuarios(long id)
         {
-            Usuarios usuarios = await db.Usuarios.FindAsync(id);
+            db.Database.Connection.Open();
+            AspNetUsers usuarios = await db.AspNetUsers.FindAsync(id);
             if (usuarios == null)
             {
                 return NotFound();
+
             }
 
             return Ok(usuarios);
+            
         }
 
         // PUT: api/UsuariosRest/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUsuarios(long id, Usuarios usuarios)
+        public async Task<IHttpActionResult> PutUsuarios(string id, AspNetUsers usuarios)
         {
+            db.Database.Connection.Open();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != usuarios.id)
+            if (id != usuarios.Id)
             {
                 return BadRequest();
             }
@@ -81,54 +137,86 @@ namespace RestAPIPlanningActivities.Controllers
             }
 
             return StatusCode(HttpStatusCode.NoContent);
+            
         }
 
         // POST: api/UsuariosRest
-        [ResponseType(typeof(Usuarios))]
-        public async Task<IHttpActionResult> PostUsuarios(Usuarios usuarios)
+        
+        [ResponseType(typeof(AspNetUsers))]
+        public async Task<IdentityUser> PostUsuarios(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
+            db.Database.Connection.Open();
+
+            IdentityUser user = new IdentityUser
             {
-                return BadRequest(ModelState);
-            }
-            //intentare poner la fecha de ese momento siempre que añada un usuario 
-            usuarios.created_at = DateTime.Now;
-            usuarios.updated_at = DateTime.Now;
-            //aqui es donde debo cifrar la contraseña para que no se vea
-            db.Usuarios.Add(usuarios);
-            await db.SaveChangesAsync();
+                UserName = model.Nombre,
+                Email = model.Email
+            };
 
-            return CreatedAtRoute("DefaultApi", new { id = usuarios.id }, usuarios);
+            //llamar al objeto UserManager
+            var User = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            /*
+            UserManager userManager = new UserManager<IUserStore<User>
+            IdentityResult result = await userManager.CreateAsync(user, userModel.Password); //var result
+            */
+            
         }
-
+        
         // DELETE: api/UsuariosRest/5
-        [ResponseType(typeof(Usuarios))]
-        public async Task<IHttpActionResult> DeleteUsuarios(long id)
+        [ResponseType(typeof(AspNetUsers))]
+        public async Task<IHttpActionResult> DeleteUsuarios(string id)
         {
-            Usuarios usuarios = await db.Usuarios.FindAsync(id);
+            db.Database.Connection.Open();
+            AspNetUsers usuarios = await db.AspNetUsers.FindAsync(id);
             if (usuarios == null)
             {
                 return NotFound();
             }
 
-            db.Usuarios.Remove(usuarios);
+            db.AspNetUsers.Remove(usuarios);
             await db.SaveChangesAsync();
 
             return Ok(usuarios);
+           
         }
 
         protected override void Dispose(bool disposing)
         {
+           
             if (disposing)
             {
                 db.Dispose();
             }
             base.Dispose(disposing);
+            
         }
 
-        private bool UsuariosExists(long id)
+        private bool UsuariosExists(string id)
         {
-            return db.Usuarios.Count(e => e.id == id) > 0;
+            db.Database.Connection.Open();
+            return db.AspNetUsers.Count(e => e.Id == id) > 0;
+            
         }
+
+        //envio token de confirmacion 
+        /*
+        private async Task<string> SendEmailConfirmationTokenAsync(string userID, string subject)
+        {
+
+            db.Database.Connection.Open();
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(userID);
+            var callbackUrl = string.Format("/Account/ConfirmEmail?userId={0}&code={1}", userID, code);
+            
+            //var callbackUrl = Url.Action("ConfirmEmail", "Account",
+            //   new { userId = userID, code = code }, protocol: Request.Url.Scheme);
+            //await UserManager.SendEmailAsync(userID, subject,
+            //   "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+            //return callbackUrl;
+            
+            return callbackUrl;
+            
+        }
+        */
     }
 }

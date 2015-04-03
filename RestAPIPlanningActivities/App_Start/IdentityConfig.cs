@@ -14,6 +14,7 @@ using RestAPIPlanningActivities.Models;
 
 namespace RestAPIPlanningActivities
 {
+    /* esta clase la sustituyo por la que he escrito en el otro lado
     public class EmailService : IIdentityMessageService
     {
         public Task SendAsync(IdentityMessage message)
@@ -22,7 +23,7 @@ namespace RestAPIPlanningActivities
             return Task.FromResult(0);
         }
     }
-
+    */
     public class SmsService : IIdentityMessageService
     {
         public Task SendAsync(IdentityMessage message)
@@ -39,7 +40,7 @@ namespace RestAPIPlanningActivities
             : base(store)
         {
         }
-
+        
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
@@ -54,10 +55,10 @@ namespace RestAPIPlanningActivities
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
                 RequireLowercase = true,
-                RequireUppercase = true,
+                RequireUppercase = false,
             };
 
             // Configurar valores predeterminados para bloqueo de usuario

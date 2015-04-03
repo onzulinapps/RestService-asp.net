@@ -9,10 +9,9 @@ namespace RestAPIPlanningActivities.Models
     {
         public Int64 id { get; set; }
         public string email { get; set; }
-        public string password { get; set; }
+        public bool emailConfirmed { get; set; }
         public string nombre { get; set; }
         public string apellidos { get; set; }
-        public string numerotelefono1 { get; set; }
-        public string numerotelefono2 { get; set; }
+        
     }
 }

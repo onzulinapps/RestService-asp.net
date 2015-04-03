@@ -24,7 +24,7 @@ namespace RestAPIPlanningActivities.Models
         protected override void Seed(MyDbContext context)
         {
             //aqui crearemos un usuario de prueba para que la gente pueda probar la aplicacion REST tanto en interfaz web como interfaz movil. Windows, iOS, Android.
-            context.Usuarios.Add(new Usuarios {email="example@restapi.com", password="jlsmjlsm", nombre = "example", created_at = DateTime.Now, updated_at = DateTime.Now});
+            //context.AspNetUsers.Add(new AspNetUsers { Email = "example@restapi.com", password = "jlsmjlsm", nombre = "example", created_at = DateTime.Now, updated_at = DateTime.Now, emailConfirmed = "0" });
             //context.Students.Add(new Student { ID = 1, FirstName = "Mark", LastName = "Richards", EnrollmentDate = DateTime.Now });
             
         }

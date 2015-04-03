@@ -9,15 +9,17 @@ using System.Data.Entity;
 
 namespace RestAPIPlanningActivities.Models
 {
-    [Table("actividadesamigos")]
+    [Table("ActividadesAmigos", Schema = "dbo")]
     public class ActividadesAmigos
     {
         [Key]
         [Column(Order=1)]
-        public Int64 idactividad { get; set; }
+        public Int64 ActividadID { get; set; }
         [Key]
         [Column(Order = 2)]
-        public Int64 idamigo { get; set; }
+        public Int64 AmigoID { get; set; }
+
+        //foreign key 
 
     }
 }

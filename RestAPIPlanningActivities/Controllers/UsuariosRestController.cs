@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using System.Web.Http;
@@ -22,11 +23,12 @@ namespace RestAPIPlanningActivities.Controllers
 {
     public class UsuariosRestController : ApiController 
     {
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
         #region atributos
         private MyDbContext db = new MyDbContext();
        
-        //private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        
         #endregion
         #region constructores
         public UsuariosRestController() 
@@ -55,7 +57,7 @@ namespace RestAPIPlanningActivities.Controllers
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                return _signInManager ?? HttpContext.Current.GetOwinContext().Get<ApplicationSignInManager>();
             }
             private set
             {
@@ -143,7 +145,7 @@ namespace RestAPIPlanningActivities.Controllers
         // POST: api/UsuariosRest
         
         [ResponseType(typeof(AspNetUsers))]
-        public async Task<IdentityUser> PostUsuarios(RegisterViewModel model)
+        public async Task<HttpResponseMessage> PostUsuarios(RegisterViewModel model)
         {
             db.Database.Connection.Open();
 
@@ -152,13 +154,23 @@ namespace RestAPIPlanningActivities.Controllers
                 UserName = model.Nombre,
                 Email = model.Email
             };
-
+            //creamos este objeto aqui y luego ya lo usamos segun necesitemos mandar el ok al telefono o que no se ha procesado la solicitud
+            HttpResponseMessage response = new HttpResponseMessage();
             //llamar al objeto UserManager
             var User = new ApplicationUser { UserName = model.Email, Email = model.Email };
-            /*
-            UserManager userManager = new UserManager<IUserStore<User>
-            IdentityResult result = await userManager.CreateAsync(user, userModel.Password); //var result
-            */
+            var result = await UserManager.CreateAsync(User, model.Password);
+            if (result.Succeeded)
+            {
+                string callbackUrl = await SendEmailConfirmationTokenAsync(User.Id, "Confirm your account");
+                response.StatusCode = HttpStatusCode.OK;
+                return response;
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
+                return response;
+            }
+            
             
         }
         
@@ -199,24 +211,25 @@ namespace RestAPIPlanningActivities.Controllers
         }
 
         //envio token de confirmacion 
-        /*
+        
         private async Task<string> SendEmailConfirmationTokenAsync(string userID, string subject)
         {
 
-            db.Database.Connection.Open();
+            //db.Database.Connection.Open();
             string code = await UserManager.GenerateEmailConfirmationTokenAsync(userID);
-            var callbackUrl = string.Format("/Account/ConfirmEmail?userId={0}&code={1}", userID, code);
-            
+            var callbackUrl1 = string.Format("/Account/ConfirmEmail?userId={0}&code={1}", userID, code);
+            var backUrl = Url.Content("http://192.168.1.4");
+            var callbackUrl = backUrl + callbackUrl1;
             //var callbackUrl = Url.Action("ConfirmEmail", "Account",
             //   new { userId = userID, code = code }, protocol: Request.Url.Scheme);
-            //await UserManager.SendEmailAsync(userID, subject,
-            //   "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+            await UserManager.SendEmailAsync(userID, subject,
+               "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
             //return callbackUrl;
             
             return callbackUrl;
             
         }
-        */
+        
     }
 }

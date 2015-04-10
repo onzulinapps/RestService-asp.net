@@ -7,11 +7,14 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword />
-    <_PublishTargetUrl>http://localhost</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\inetpub\wwwroot\RestApi</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>02/16/2015 13:39:24</publishTime>
+    </File>
+    <File Include="bin/de/Npgsql.resources.dll">
+      <publishTime>03/15/2015 11:52:24</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>02/16/2015 13:39:32</publishTime>
@@ -55,6 +58,12 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     <File Include="bin/es/Microsoft.Owin.Security.Twitter.resources.dll">
       <publishTime>02/16/2015 13:39:40</publishTime>
     </File>
+    <File Include="bin/es/Npgsql.resources.dll">
+      <publishTime>03/15/2015 11:52:24</publishTime>
+    </File>
+    <File Include="bin/es/RestAPIPlanningActivities.resources.dll">
+      <publishTime>04/09/2015 12:48:05</publishTime>
+    </File>
     <File Include="bin/es/System.Net.Http.Formatting.resources.dll">
       <publishTime>02/16/2015 13:39:30</publishTime>
     </File>
@@ -84,6 +93,15 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     </File>
     <File Include="bin/es/System.Web.WebPages.resources.dll">
       <publishTime>02/16/2015 13:39:27</publishTime>
+    </File>
+    <File Include="bin/fi/Npgsql.resources.dll">
+      <publishTime>03/15/2015 11:52:24</publishTime>
+    </File>
+    <File Include="bin/fr/Npgsql.resources.dll">
+      <publishTime>03/15/2015 11:52:24</publishTime>
+    </File>
+    <File Include="bin/ja/Npgsql.resources.dll">
+      <publishTime>03/15/2015 11:52:24</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
       <publishTime>02/16/2015 13:39:35</publishTime>
@@ -124,6 +142,9 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>02/16/2015 13:39:24</publishTime>
     </File>
+    <File Include="bin/Mono.Security.dll">
+      <publishTime>03/15/2015 11:52:24</publishTime>
+    </File>
     <File Include="bin/MySql.Data.dll">
       <publishTime>02/17/2015 12:15:37</publishTime>
     </File>
@@ -133,11 +154,26 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>02/16/2015 13:39:29</publishTime>
     </File>
+    <File Include="bin/Npgsql.dll">
+      <publishTime>03/15/2015 11:52:24</publishTime>
+    </File>
+    <File Include="bin/Npgsql.EntityFramework.dll">
+      <publishTime>03/15/2015 11:52:24</publishTime>
+    </File>
     <File Include="bin/Owin.dll">
       <publishTime>02/16/2015 13:39:36</publishTime>
     </File>
     <File Include="bin/RestAPIPlanningActivities.dll">
-      <publishTime>02/20/2015 13:15:48</publishTime>
+      <publishTime>04/09/2015 12:48:05</publishTime>
+    </File>
+    <File Include="bin/SendGrid.SmtpApi.dll">
+      <publishTime>02/24/2015 12:08:15</publishTime>
+    </File>
+    <File Include="bin/SendGridMail.dll">
+      <publishTime>02/24/2015 12:08:15</publishTime>
+    </File>
+    <File Include="bin/Simplify.Mail.dll">
+      <publishTime>03/04/2015 11:59:06</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
       <publishTime>02/16/2015 13:39:30</publishTime>
@@ -172,6 +208,12 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     <File Include="bin/WebGrease.dll">
       <publishTime>02/16/2015 13:39:25</publishTime>
     </File>
+    <File Include="bin/zh-CN/Npgsql.resources.dll">
+      <publishTime>03/15/2015 11:52:24</publishTime>
+    </File>
+    <File Include="ClassDiagram1.cd">
+      <publishTime>02/25/2015 12:05:18</publishTime>
+    </File>
     <File Include="Content/bootstrap.css">
       <publishTime>02/16/2015 13:39:17</publishTime>
     </File>
@@ -200,7 +242,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>02/16/2015 13:39:11</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>03/15/2015 11:53:10</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>02/16/2015 13:39:17</publishTime>
@@ -221,13 +263,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>02/16/2015 13:39:25</publishTime>
     </File>
     <File Include="Scripts/jquery.validate.min.js">
-      <publishTime>02/16/2015 13:39:25</publishTime>
+      <publishTime>02/25/2015 15:49:55</publishTime>
     </File>
     <File Include="Scripts/jquery.validate.unobtrusive.js">
       <publishTime>02/16/2015 13:39:26</publishTime>
     </File>
     <File Include="Scripts/jquery.validate.unobtrusive.min.js">
-      <publishTime>02/16/2015 13:39:26</publishTime>
+      <publishTime>02/27/2015 11:20:34</publishTime>
     </File>
     <File Include="Scripts/modernizr-2.6.2.js">
       <publishTime>02/16/2015 13:39:24</publishTime>
@@ -242,7 +284,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>02/16/2015 13:39:24</publishTime>
     </File>
     <File Include="Views/Account/ConfirmEmail.cshtml">
-      <publishTime>02/16/2015 13:39:31</publishTime>
+      <publishTime>03/16/2015 14:15:11</publishTime>
     </File>
     <File Include="Views/Account/ExternalLoginConfirmation.cshtml">
       <publishTime>02/16/2015 13:39:31</publishTime>
@@ -256,11 +298,14 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     <File Include="Views/Account/ForgotPasswordConfirmation.cshtml">
       <publishTime>02/16/2015 13:39:31</publishTime>
     </File>
+    <File Include="Views/Account/Info.cshtml">
+      <publishTime>03/16/2015 13:40:42</publishTime>
+    </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>02/16/2015 13:39:31</publishTime>
+      <publishTime>02/26/2015 13:19:16</publishTime>
     </File>
     <File Include="Views/Account/Register.cshtml">
-      <publishTime>02/16/2015 13:39:31</publishTime>
+      <publishTime>03/18/2015 15:12:02</publishTime>
     </File>
     <File Include="Views/Account/ResetPassword.cshtml">
       <publishTime>02/16/2015 13:39:31</publishTime>
@@ -293,7 +338,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>02/16/2015 13:39:31</publishTime>
     </File>
     <File Include="Views/Manage/Index.cshtml">
-      <publishTime>02/16/2015 13:39:31</publishTime>
+      <publishTime>03/26/2015 13:02:20</publishTime>
     </File>
     <File Include="Views/Manage/ManageLogins.cshtml">
       <publishTime>02/16/2015 13:39:31</publishTime>
@@ -305,13 +350,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>02/16/2015 13:39:31</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
-      <publishTime>02/16/2015 13:39:31</publishTime>
+      <publishTime>02/26/2015 13:19:16</publishTime>
     </File>
     <File Include="Views/Shared/Lockout.cshtml">
       <publishTime>02/16/2015 13:39:31</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>02/16/2015 13:39:31</publishTime>
+      <publishTime>04/09/2015 12:49:57</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>02/16/2015 13:39:31</publishTime>
@@ -323,7 +368,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>02/16/2015 13:39:11</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>02/20/2015 13:20:48</publishTime>
+      <publishTime>04/09/2015 13:20:39</publishTime>
     </File>
   </ItemGroup>
 </Project>

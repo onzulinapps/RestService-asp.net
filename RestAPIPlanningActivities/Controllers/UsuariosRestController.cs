@@ -91,7 +91,7 @@ namespace RestAPIPlanningActivities.Controllers
         
         // GET: api/UsuariosRest/5
         [ResponseType(typeof(AspNetUsers))]
-        public async Task<IHttpActionResult> GetUsuarios(long id)
+        public async Task<IHttpActionResult> GetUsuarios(string id)
         {
             db.Database.Connection.Open();
             AspNetUsers usuarios = await db.AspNetUsers.FindAsync(id);
@@ -161,6 +161,7 @@ namespace RestAPIPlanningActivities.Controllers
             var result = await UserManager.CreateAsync(User, model.Password);
             if (result.Succeeded)
             {
+                //UrlHelper urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext, RouteTable.Routes);
                 string callbackUrl = await SendEmailConfirmationTokenAsync(User.Id, "Confirm your account");
                 response.StatusCode = HttpStatusCode.OK;
                 return response;
@@ -217,18 +218,38 @@ namespace RestAPIPlanningActivities.Controllers
 
             //db.Database.Connection.Open();
             string code = await UserManager.GenerateEmailConfirmationTokenAsync(userID);
-            var callbackUrl1 = string.Format("/Account/ConfirmEmail?userId={0}&code={1}", userID, code);
-            var backUrl = Url.Content("http://192.168.1.4");
-            var callbackUrl = backUrl + callbackUrl1;
+            //var callbackUrl1 = string.Format("Account/ConfirmEmail?userId={0}&code={1}", userID, code);
+            //var backUrl = Url.Content("http://192.168.1.4:2604");
+            //var callbackUrl = backUrl + callbackUrl1;
             //var callbackUrl = Url.Action("ConfirmEmail", "Account",
             //   new { userId = userID, code = code }, protocol: Request.Url.Scheme);
+            //var callBackUrl = ("ConfirmEmail", new AccountController = "AccountController",) 
+            //string routeValue = "ConfirmEmail?userid=" + userID + "&code=" + code;
+            //aqui voy a generar una ruta viendo como se hace con otro codigo 
+            string confirmacion = "/ConfirmEmail";
+            string callBackUrl = this.Url.Link("DefaultApi", new { confirmacion,userId = userID, code = code });
             await UserManager.SendEmailAsync(userID, subject,
-               "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+               "Please confirm your account by clicking <a href=\"" + callBackUrl + "\">here</a>");
 
             //return callbackUrl;
+
+            return callBackUrl;
             
-            return callbackUrl;
-            
+        }
+
+        // GET: Api/UsuariosRest/ConfirmEmail
+        [AllowAnonymous]
+        public async Task<HttpResponseMessage> ConfirmEmail(string userId, string code)
+        {
+            HttpResponseMessage response = new HttpResponseMessage();
+            if (userId == null || code == null)
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
+                return response;
+            }
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
+            response.StatusCode = HttpStatusCode.OK;
+            return response;
         }
         
     }

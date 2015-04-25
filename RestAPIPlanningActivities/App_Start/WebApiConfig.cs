@@ -10,7 +10,7 @@ namespace RestAPIPlanningActivities
         public static void Register(HttpConfiguration config)
         {
             // Configuración y servicios de API web
-
+            
             // Rutas de API web
             config.MapHttpAttributeRoutes();
 
@@ -19,6 +19,13 @@ namespace RestAPIPlanningActivities
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            /*
+            config.Routes.MapHttpRoute(
+                name: "ConfirmEmail",
+                routeTemplate: "api/{controller}/{id}/ConfirmEmail",
+                defaults: new { id = RouteParameter.Optional } 
+                );
+            */ 
         }
     }
 }
